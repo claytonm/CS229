@@ -1,0 +1,106 @@
+%% LyX 2.2.2 created this file.  For more info, see http://www.lyx.org/.
+%% Do not edit unless you really know what you are doing.
+\documentclass[english]{article}
+\usepackage[T1]{fontenc}
+\usepackage[latin9]{luainputenc}
+\usepackage{amsmath}
+
+\makeatletter
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+\renewcommand{\labelenumi}{\alph{enumi})}
+\@addtoreset{equation}{section}
+
+\makeatother
+
+\usepackage{babel}
+\begin{document}
+
+\section{Newton's method for computing least squares}
+\begin{enumerate}
+\item The Hessian of a function $J(\theta)$ is a matrix $H$ such that
+$H_{i,j}$ = $\frac{\partial J(\theta)}{\partial\theta_{i}\theta_{j}}$.
+Taking the first partial derivate of $J(\theta)=\frac{1}{2}\sum_{i=1}^{m}(\theta^{T}x^{(i)}-y^{(i)})^{2}$,
+we get 
+\begin{equation}
+\frac{\partial J(\theta)}{\partial\theta_{k}}=\sum_{i=1}^{m}(\theta^{T}x^{(i)}-y^{(i)})x_{k}^{(i)}\label{eq:1}
+\end{equation}
+To see where the term $x_{k}^{(i)}$ in equation (\ref{eq:1}) comes
+from, note that $\theta^{T}x^{(i)}=\sum_{j=1}^{n}\theta_{j}x_{j}^{(i)}$,
+so $x_{k}^{(i)}$ is the only element of $x^{(i)}$ that remains after
+taking the derivate with respect to $\theta_{k}$.
+
+Taking the second partial derivative, we get
+\begin{equation}
+\frac{\partial J(\theta)}{\partial\theta_{k}\theta_{l}}=\sum_{i=1}^{m}x_{l}^{(i)}x_{k}^{(i)}=X^{T}X,\label{eq:2}
+\end{equation}
+ so $H=X^{T}X$. The sum in (\ref{eq:2}) shows that the $l,k$th
+entry in $H$ is the dot product of columns $l$ and $k$ of $X$.
+\item According to Newton's method, $\theta_{t}:=\theta_{t-1}-H^{-1}\nabla_{\theta}l(\theta).$
+Equation (\ref{eq:1}) is the $k$th element of $\nabla_{\theta}l(\theta)$,
+and (\ref{eq:2}) is $H$. We only need to translate (\ref{eq:1})
+into matrix notation. 
+
+The term $\theta^{T}x^{(i)}$ is the dot product of $\theta$ with
+row $i$ of $X$. In matrix notation, this becomes $X\theta$. We
+then subtract $Y$ from this, giving $X\theta-Y$. The $k$th element
+of $\nabla_{\theta}l(\theta)$ is then the dot product of the $k$th
+column of $X$ with $X-\theta Y$. In matrix notation, this is $X^{T}(X\theta-Y)$.
+Multiplying this by $H^{-1}$ gives $(X^{T}X)^{-1}X^{T}(X\theta-Y)$.
+Distributing and cancelling, we get $\theta-(X^{T}X)^{-1}X^{T}Y$. 
+
+If we let $\theta_{0}$ and $\theta_{1}$ be the values of theta on
+the first and second iteration of Newton's algorithm, we get $\theta_{1}:=\theta_{0}-(\theta_{0}-(X^{T}X)^{-1}X^{T}Y=(X^{T}X)^{-1}X^{T}Y$.
+The rightside of the this equation is the normal equations for linear
+regression. So, Newton's method converges to the correct value for
+theta in one iteration.
+\end{enumerate}
+
+\section{Locally-weighted logistic regression}
+
+Before we implement the Newton-Raphson algorithm to perform locally-weighted
+regression, we'll derive the formulas that are given in the homework
+problem. For reference, 
+\begin{equation}
+l(\theta)=-\frac{\lambda}{2}\theta^{T}\theta+\sum_{i=1}^{m}w^{(i)}\left[y^{(i)}\log h_{\theta}(x^{(i)})+(1-y^{(i)})\log(1-h_{\theta}(x^{(i)}))\right]\label{eq:2-1}
+\end{equation}
+
+First we'll derive 
+\begin{equation}
+\nabla_{\theta}l(\theta)=X^{T}z-\lambda\theta.\label{eq:2-2}
+\end{equation}
+
+Going from left to right, the regularization term, $-\frac{\lambda}{2}\theta^{T}\theta$,
+is the dot-product of $\theta$ with itself. Letting $f(\theta)=$
+$\sum_{i}^{m}\theta_{i}\theta_{i},$we see that $\frac{\partial f}{\partial\theta_{j}}=2\theta_{j}$,
+so $\frac{1}{2}\lambda\nabla_{\theta}\theta^{T}\theta=\lambda\theta$. 
+
+From page 18 of lecture notes 1, we know that the partial derivative
+of the summation with respect to $\theta_{j}$ is $w^{(i)}(y^{(i)}-h(x^{(i)})x_{j}^{(i)}$.
+Letting $z^{(i)}=w^{(i)}(y^{(i)}-h(x^{(i)})$, this becomes $z^{(i)}x_{j}^{(i)}$.
+We've seen this pattern before: the dot product of the $i$th row
+of $z$ with the $j$th column of $X$. In matrix notation, this is
+$X^{T}z$. Combining, we get equation \ref{eq:2-2}.
+
+Next we derive the equation for the Hessian,
+\begin{equation}
+H=X^{T}DX-\lambda I,\label{eq:2-3}
+\end{equation}
+
+where $D$ is a diagonal matrix with 
+\[
+D_{ii}=-w^{(i)}h_{\theta}(x^{(i)})(1-h_{\theta}(x^{(i)})).
+\]
+
+From \ref{eq:2-2}, we can read off the $j$th component of $\nabla_{\theta}l(\theta)$
+as $\sum_{i=1}^{m}w^{(i)}(y^{(i)}-h_{\theta}(x^{(i)}))x_{j}^{(i)}-\lambda\theta_{j}$.
+Taking the second-partial derivative with respect to $k$, we get
+\begin{align*}
+\frac{\partial\nabla_{\theta}l}{\partial\theta_{j}\partial\theta_{k}} & =-\sum_{i=1}^{m}w^{(i)}h_{\theta}(x^{(i)})x_{j}^{(i)}\\
+ & =-\sum_{i=1}^{m}w^{(i)}h_{\theta}(x^{(i)})(1-h_{\theta}(x^{(i)}))x_{j}^{(i)}x_{k}^{(i)}-\lambda\theta_{k=j}
+\end{align*}
+
+Written in matrix notation, the sum is $X^{T}D_{ii}X$, and the second
+term is $\lambda I$. Putting it together, we get \ref{eq:2-3}.
+
+
+\end{document}

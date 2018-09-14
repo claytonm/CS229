@@ -1,0 +1,1018 @@
+#LyX 2.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 508
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass article
+\begin_preamble
+\renewcommand{\labelenumi}{\alph{enumi})}
+\@addtoreset{equation}{section}
+\end_preamble
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Section
+Newton's method for computing least squares
+\end_layout
+
+\begin_layout Enumerate
+The Hessian of a function 
+\begin_inset Formula $J(\theta)$
+\end_inset
+
+ is a matrix 
+\begin_inset Formula $H$
+\end_inset
+
+ such that 
+\begin_inset Formula $H_{i,j}$
+\end_inset
+
+ = 
+\begin_inset Formula $\frac{\partial J(\theta)}{\partial\theta_{i}\theta_{j}}$
+\end_inset
+
+.
+ Taking the first partial derivate of 
+\begin_inset Formula $J(\theta)=\frac{1}{2}\sum_{i=1}^{m}(\theta^{T}x^{(i)}-y^{(i)})^{2}$
+\end_inset
+
+, we get 
+\begin_inset Formula 
+\begin{equation}
+\frac{\partial J(\theta)}{\partial\theta_{k}}=\sum_{i=1}^{m}(\theta^{T}x^{(i)}-y^{(i)})x_{k}^{(i)}\label{eq:1}
+\end{equation}
+
+\end_inset
+
+To see where the term 
+\begin_inset Formula $x_{k}^{(i)}$
+\end_inset
+
+ in equation 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:1"
+
+\end_inset
+
+ comes from, note that 
+\begin_inset Formula $\theta^{T}x^{(i)}=\sum_{j=1}^{n}\theta_{j}x_{j}^{(i)}$
+\end_inset
+
+, so 
+\begin_inset Formula $x_{k}^{(i)}$
+\end_inset
+
+ is the only element of 
+\begin_inset Formula $x^{(i)}$
+\end_inset
+
+ that remains after taking the derivate with respect to 
+\begin_inset Formula $\theta_{k}$
+\end_inset
+
+.
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+Taking the second partial derivative, we get
+\begin_inset Formula 
+\begin{equation}
+\frac{\partial J(\theta)}{\partial\theta_{k}\theta_{l}}=\sum_{i=1}^{m}x_{l}^{(i)}x_{k}^{(i)}=X^{T}X,\label{eq:2}
+\end{equation}
+
+\end_inset
+
+ so 
+\begin_inset Formula $H=X^{T}X$
+\end_inset
+
+.
+ The sum in 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:2"
+
+\end_inset
+
+ shows that the 
+\begin_inset Formula $l,k$
+\end_inset
+
+th entry in 
+\begin_inset Formula $H$
+\end_inset
+
+ is the dot product of columns 
+\begin_inset Formula $l$
+\end_inset
+
+ and 
+\begin_inset Formula $k$
+\end_inset
+
+ of 
+\begin_inset Formula $X$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+According to Newton's method, 
+\begin_inset Formula $\theta_{t}:=\theta_{t-1}-H^{-1}\nabla_{\theta}l(\theta).$
+\end_inset
+
+ Equation 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:1"
+
+\end_inset
+
+ is the 
+\begin_inset Formula $k$
+\end_inset
+
+th element of 
+\begin_inset Formula $\nabla_{\theta}l(\theta)$
+\end_inset
+
+, and 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:2"
+
+\end_inset
+
+ is 
+\begin_inset Formula $H$
+\end_inset
+
+.
+ We only need to translate 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:1"
+
+\end_inset
+
+ into matrix notation.
+ 
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+The term 
+\begin_inset Formula $\theta^{T}x^{(i)}$
+\end_inset
+
+ is the dot product of 
+\begin_inset Formula $\theta$
+\end_inset
+
+ with row 
+\begin_inset Formula $i$
+\end_inset
+
+ of 
+\begin_inset Formula $X$
+\end_inset
+
+.
+ In matrix notation, this becomes 
+\begin_inset Formula $X\theta$
+\end_inset
+
+.
+ We then subtract 
+\begin_inset Formula $Y$
+\end_inset
+
+ from this, giving 
+\begin_inset Formula $X\theta-Y$
+\end_inset
+
+.
+ The 
+\begin_inset Formula $k$
+\end_inset
+
+th element of 
+\begin_inset Formula $\nabla_{\theta}l(\theta)$
+\end_inset
+
+ is then the dot product of the 
+\begin_inset Formula $k$
+\end_inset
+
+th column of 
+\begin_inset Formula $X$
+\end_inset
+
+ with 
+\begin_inset Formula $X-\theta Y$
+\end_inset
+
+.
+ In matrix notation, this is 
+\begin_inset Formula $X^{T}(X\theta-Y)$
+\end_inset
+
+.
+ Multiplying this by 
+\begin_inset Formula $H^{-1}$
+\end_inset
+
+ gives 
+\begin_inset Formula $(X^{T}X)^{-1}X^{T}(X\theta-Y)$
+\end_inset
+
+.
+ Distributing and cancelling, we get 
+\begin_inset Formula $\theta-(X^{T}X)^{-1}X^{T}Y$
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+If we let 
+\begin_inset Formula $\theta_{0}$
+\end_inset
+
+ and 
+\begin_inset Formula $\theta_{1}$
+\end_inset
+
+ be the values of theta on the first and second iteration of Newton's algorithm,
+ we get 
+\begin_inset Formula $\theta_{1}:=\theta_{0}-(\theta_{0}-(X^{T}X)^{-1}X^{T}Y=(X^{T}X)^{-1}X^{T}Y$
+\end_inset
+
+.
+ The rightside of the this equation is the normal equations for linear regressio
+n.
+ So, Newton's method converges to the correct value for theta in one iteration.
+\end_layout
+
+\end_deeper
+\begin_layout Section
+Locally-weighted logistic regression
+\end_layout
+
+\begin_layout Standard
+Before we implement the Newton-Raphson algorithm to perform locally-weighted
+ regression, we'll derive the formulas that are given in the homework problem.
+ For reference, 
+\begin_inset Formula 
+\begin{equation}
+l(\theta)=-\frac{\lambda}{2}\theta^{T}\theta+\sum_{i=1}^{m}w^{(i)}\left[y^{(i)}\log h_{\theta}(x^{(i)})+(1-y^{(i)})\log(1-h_{\theta}(x^{(i)}))\right]\label{eq:2-1}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+First we'll derive 
+\begin_inset Formula 
+\begin{equation}
+\nabla_{\theta}l(\theta)=X^{T}z-\lambda\theta.\label{eq:2-2}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Going from left to right, the regularization term, 
+\begin_inset Formula $-\frac{\lambda}{2}\theta^{T}\theta$
+\end_inset
+
+, is the dot-product of 
+\begin_inset Formula $\theta$
+\end_inset
+
+ with itself.
+ Letting 
+\begin_inset Formula $f(\theta)=$
+\end_inset
+
+ 
+\begin_inset Formula $\sum_{i}^{m}\theta_{i}\theta_{i},$
+\end_inset
+
+we see that 
+\begin_inset Formula $\frac{\partial f}{\partial\theta_{j}}=2\theta_{j}$
+\end_inset
+
+, so 
+\begin_inset Formula $\frac{1}{2}\lambda\nabla_{\theta}\theta^{T}\theta=\lambda\theta$
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+From page 18 of lecture notes 1, we know that the partial derivative of
+ the summation with respect to 
+\begin_inset Formula $\theta_{j}$
+\end_inset
+
+ is 
+\begin_inset Formula $w^{(i)}(y^{(i)}-h(x^{(i)})x_{j}^{(i)}$
+\end_inset
+
+.
+ Letting 
+\begin_inset Formula $z^{(i)}=w^{(i)}(y^{(i)}-h(x^{(i)})$
+\end_inset
+
+, this becomes 
+\begin_inset Formula $z^{(i)}x_{j}^{(i)}$
+\end_inset
+
+.
+ We've seen this pattern before: the dot product of the 
+\begin_inset Formula $i$
+\end_inset
+
+th row of 
+\begin_inset Formula $z$
+\end_inset
+
+ with the 
+\begin_inset Formula $j$
+\end_inset
+
+th column of 
+\begin_inset Formula $X$
+\end_inset
+
+.
+ In matrix notation, this is 
+\begin_inset Formula $X^{T}z$
+\end_inset
+
+.
+ Combining, we get equation 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:2-2"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Next we derive the equation for the Hessian,
+\begin_inset Formula 
+\begin{equation}
+H=X^{T}DX-\lambda I,\label{eq:2-3}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+where 
+\begin_inset Formula $D$
+\end_inset
+
+ is a diagonal matrix with 
+\begin_inset Formula 
+\[
+D_{ii}=-w^{(i)}h_{\theta}(x^{(i)})(1-h_{\theta}(x^{(i)})).
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+From 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:2-2"
+
+\end_inset
+
+, we can read off the 
+\begin_inset Formula $j$
+\end_inset
+
+th component of 
+\begin_inset Formula $\nabla_{\theta}l(\theta)$
+\end_inset
+
+ as 
+\begin_inset Formula $\sum_{i=1}^{m}w^{(i)}(y^{(i)}-h_{\theta}(x^{(i)}))x_{j}^{(i)}-\lambda\theta_{j}$
+\end_inset
+
+.
+ Taking the second-partial derivative with respect to 
+\begin_inset Formula $k$
+\end_inset
+
+, we get
+\begin_inset Formula 
+\begin{align*}
+\frac{\partial\nabla_{\theta}l}{\partial\theta_{j}\partial\theta_{k}} & =-\sum_{i=1}^{m}w^{(i)}h_{\theta}(x^{(i)})x_{j}^{(i)}\\
+ & =-\sum_{i=1}^{m}w^{(i)}h_{\theta}(x^{(i)})(1-h_{\theta}(x^{(i)}))x_{j}^{(i)}x_{k}^{(i)}-\lambda\theta_{k=j},
+\end{align*}
+
+\end_inset
+
+where the expansion of 
+\begin_inset Formula $h_{\theta}(x^{(i)})$
+\end_inset
+
+ in the second equation comes from page 17 of lecture notes 1.
+ 
+\end_layout
+
+\begin_layout Standard
+Written in matrix notation, the sum is 
+\begin_inset Formula $X^{T}D_{ii}X$
+\end_inset
+
+, and the second term is 
+\begin_inset Formula $\lambda I$
+\end_inset
+
+.
+ Putting it together, we get equation 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:2-3"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+The R code to implement locally-weighted is located in ps1_q2.R.
+\end_layout
+
+\begin_layout Section
+Multivariate least squares
+\end_layout
+
+\begin_layout Enumerate
+The Frobenious norm of a matrix 
+\begin_inset Formula $A$
+\end_inset
+
+ is given by 
+\begin_inset Formula 
+\[
+\left\Vert A\right\Vert _{F}=\sqrt{\sum_{i=1}^{m}\sum_{j=1}^{n}A_{ij}^{2}}=\sqrt{tr(A^{T}A)}.
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+From this we can see that 
+\begin_inset Formula $J(\Theta)$
+\end_inset
+
+ is the (squared) Frobenious norm with 
+\begin_inset Formula $A=X\Theta-Y$
+\end_inset
+
+, so in matrix notation, 
+\begin_inset Formula $J(\Theta)=tr((X\Theta-Y)^{T}(X\Theta-Y))$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+We'll use various properties of the trace and it's derivative to derive
+ the normal equations for theta in the multivariate context.
+ First, expand the expression inside the trace, 
+\begin_inset Formula 
+\begin{align*}
+\nabla_{\Theta}tr((X\Theta-Y)^{T}(X\Theta-Y)) & =\nabla_{\Theta}tr((X\Theta-Y)^{T}(X\Theta-Y))\\
+ & =\nabla_{\Theta}tr((\Theta^{T}X^{T}X\Theta-Y^{T}X\Theta-\Theta^{T}X^{T}Y+Y^{T}Y))\\
+ & =\nabla_{\Theta}(tr(\Theta^{T}X^{T}X\Theta)-tr(Y^{T}X\Theta)-tr(\Theta^{T}X^{T}Y)+tr(Y^{T}Y))\\
+ & =\nabla_{\Theta}(tr(\Theta^{T}X^{T}X\Theta)-tr(\Theta Y^{T}X)-tr(Y^{T}X\Theta)+tr(Y^{T}Y))\\
+ & =\nabla_{\Theta}tr(\Theta^{T}X^{T}X\Theta)-\nabla_{\Theta}tr(\Theta Y^{T}X)-\nabla_{\Theta}tr(\Theta Y^{T}X)+\nabla_{\Theta}tr(Y^{T}Y)\\
+ & =2X^{T}X\Theta-2X^{T}Y\\
+\Theta & =(X^{T}X)^{-1}X^{T}Y
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Treating the problem as multiple, independent least-square problems will
+ not change the parameter values, because the matrix 
+\begin_inset Formula $Y$
+\end_inset
+
+ acts on 
+\begin_inset Formula $(X^{T}X)^{-1}X^{T}$
+\end_inset
+
+ columnwise.
+ In other words, the 
+\begin_inset Formula $i$
+\end_inset
+
+th column of 
+\begin_inset Formula $\Theta$
+\end_inset
+
+ is the product of 
+\begin_inset Formula $(X^{T}X)^{-1}X^{T}$
+\end_inset
+
+ with the the 
+\begin_inset Formula $i$
+\end_inset
+
+th column of 
+\begin_inset Formula $Y$
+\end_inset
+
+, the exact same formula we derived in the univariate regression setting.
+ 
+\end_layout
+
+\begin_layout Section
+Naive Bayes
+\end_layout
+
+\begin_layout Enumerate
+To find the joint likelihood function of 
+\begin_inset Formula $l(\phi)=\log\prod_{i=1}^{m}p(x^{(i)},y^{(i)};\phi)$
+\end_inset
+
+, first use Bayes Theorem to factor the joint probabilities to get 
+\begin_inset Formula 
+\[
+p(x^{(i)},y^{(i)};\phi)=p(x^{(i)}\mid y^{(i)};\phi)p(y^{(i)}\mid\phi),
+\]
+
+\end_inset
+
+ and then distribute the log to get 
+\begin_inset Formula 
+\begin{equation}
+\log\prod_{i=1}^{m}p(x^{(i)},y^{(i)};\phi)=\sum_{i=1}^{m}\log p(x^{(i)}\mid y^{(i)};\phi)+\log p(y^{(i)}\mid\phi).\label{eq:4-1}
+\end{equation}
+
+\end_inset
+
+We can then factor each expression in the sum separately, and plug them
+ back into 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:4-1"
+
+\end_inset
+
+.
+ Going from left to right,
+\begin_inset Formula 
+\begin{align*}
+\log p(x^{(i)} & \mid y^{(i)};\phi)=\log\prod_{j=1}^{n}(\phi_{j\mid y=y^{(i)}})^{x_{j}^{(i)}}(1-\phi_{j\mid y=y^{(i)}})^{1-x_{j}^{(i)}}\\
+ & =\sum_{j=1}^{n}x_{j}^{(i)}\log\phi_{j\mid y=y^{(i)}}+(1-x_{j}^{(i)})\log(1-\phi_{y=y^{(i)}})\\
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+and
+\begin_inset Formula 
+\[
+\log p(y\mid\phi)=y\log\phi_{y}+(1-y)\log\phi_{y}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Substituting these two expressions into 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:4-1"
+
+\end_inset
+
+, we get
+\begin_inset Formula 
+\begin{multline}
+\log\prod_{i=1}^{m}p(x^{(i)},y^{(i)};\phi)=\sum_{i=1}^{m}\left[\sum_{j=1}^{n}x_{j}^{(i)}\log(\phi_{j\mid y=y^{(i)}})+(1-x_{j}^{(i)})\log(1-\phi_{j\mid y=y^{(i)}})\right]\\
++y^{(i)}\log\phi_{y}+(1-y^{(i)})\log(1-\phi_{y})\label{eq:4-2}
+\end{multline}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Note that the second line in this equation is also within the sum 
+\begin_inset Formula $\sum_{i=1}^{m}$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+We'll start with the parameters 
+\begin_inset Formula $\phi_{j\mid y=y^{(i)}}$
+\end_inset
+
+.
+ Taking partial derivatives, setting equal to zero, and then cross-multiplying,
+ we get
+\begin_inset Formula 
+\begin{align*}
+\frac{\partial\log\prod_{i=1}^{m}p(x^{(i)},y^{(i)};\phi)}{\partial\phi_{j\mid y=y^{(i)}}} & =\sum_{i=1}^{m}\sum_{j=1}^{n}\frac{x_{j}^{(i)}}{\phi_{j\mid y=y^{(i)}}}-\frac{(1-x_{j}^{(i)})}{(1-\phi_{j\mid y=y^{(i)}})}\\
+ & =\sum_{i=1}^{m}\sum_{j=1}^{n}x_{j}^{(i)}(1-\phi_{j\mid y=y^{(i)}})-\phi_{j\mid y=y^{(i)}}(1-x_{j}^{(i)})\\
+ & =\sum_{i=1}^{m}\sum_{j=1}^{n}x_{j}^{(i)}-\phi_{j\mid y=y^{(i)}}
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+To simplify notation, we'll let 
+\begin_inset Formula $y=0$
+\end_inset
+
+ and 
+\begin_inset Formula $j=k$
+\end_inset
+
+.
+ The results will immediately generalize to all values of 
+\begin_inset Formula $y$
+\end_inset
+
+ and 
+\begin_inset Formula $j$
+\end_inset
+
+.
+ This gives 
+\begin_inset Formula 
+\begin{align*}
+\sum_{i=1}^{m}x_{k}^{(i)}-\phi_{k|y=0} & =\sum_{i=1}^{m}1\left\{ x_{k}^{(i)}=1\wedge y=0\right\} -\phi_{k\mid y=0}\sum_{i=1}^{m}1\left\{ y=0\right\} \\
+\phi_{k|y=0} & =\frac{\sum_{i=1}^{m}1\left\{ x_{k}^{(i)}=1\wedge y=0\right\} }{\sum_{i=1}^{m}1\left\{ y=0\right\} }.
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Substitute 
+\begin_inset Formula $j$
+\end_inset
+
+ for 
+\begin_inset Formula $k$
+\end_inset
+
+ to get the general result.
+ The derivation for 
+\begin_inset Formula $y=1$
+\end_inset
+
+ is identical.
+ 
+\end_layout
+
+\begin_layout Standard
+The derivation of the parameters 
+\begin_inset Formula $\phi_{y}$
+\end_inset
+
+ is similar: take partial derivatives, set equal to zero, cross-multiply,
+ cancel, profit.
+ Skipping straight to the partial derivative, we get,
+\begin_inset Formula 
+\begin{align*}
+\sum_{i=1}^{m}\frac{y^{(i)}}{\phi_{y}}- & \frac{1-y^{(i)}}{1-\phi_{y}}=0\\
+ & =\sum_{i=1}^{m}(1-\phi_{y})y^{(i)}-(1-y^{(i)})\phi_{y}\\
+ & =\sum_{i=1}^{m}y^{(i)}-\phi_{y}
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Setting 
+\begin_inset Formula $y^{(i)}=0$
+\end_inset
+
+, we get 
+\begin_inset Formula 
+\begin{align*}
+\sum_{i=1}^{m}1\left\{ y=0\right\} -\phi_{0}\sum_{i=1}^{m}1 & =0\\
+\phi_{0} & =\frac{\sum_{i=1}^{m}1\left\{ y=0\right\} }{m}
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The derivation is idential for 
+\begin_inset Formula $y^{(i)}=1$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+First write 
+\begin_inset Formula $p(y=1\mid x)>p(y=0\mid x)$
+\end_inset
+
+ in terms of Bayes Theorem, to get
+\begin_inset Formula 
+\begin{align*}
+\frac{p(x\mid y=1)p(y=1)}{p(x)} & >\frac{p(x\mid y=0)p(y=0)}{p(x)}\\
+p(x\mid y=1)p(y=1) & >p(x\mid y=0)p(y=0)
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+Taking the 
+\begin_inset Formula $\log$
+\end_inset
+
+ of 
+\begin_inset Formula $p(x\mid y=k)$
+\end_inset
+
+, we get 
+\begin_inset Formula 
+\begin{align*}
+\log p(x & \mid y=k)=\log\prod_{j=1}^{n}(\phi_{j\mid y=1})^{x_{j}}(1-\phi_{j\mid y=1})^{1-x_{j}}\phi_{k}^{k}(1-\phi_{k})^{1-k}\\
+ & =\sum_{j=1}^{m}x_{j}\log\phi_{j\mid y=1}+(1-x_{j})\log(1-\phi_{j\mid y=1})+\log(\phi_{k}^{k}(1-\phi_{k})^{1-k})\\
+ & =\sum_{j=1}^{m}x_{j}(\log\phi_{j\mid y=1}-\log(1-\phi_{j\mid y=1}))+\log(\phi_{k}^{k}(1-\phi_{k})^{1-k})\\
+ & =\sum_{j=1}^{m}x_{j}\log\frac{\phi_{j\mid y=1}}{1-\phi_{j\mid y=1}}+\log(1-\phi_{j\mid y=1})+\log(\phi_{k}^{k}(1-\phi_{k})^{1-k})
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Define 
+\begin_inset Formula $\theta_{k}$
+\end_inset
+
+ as the vector whose 
+\begin_inset Formula $j$
+\end_inset
+
+th component is 
+\begin_inset Formula $\log\frac{\phi_{j\mid y=k}}{1-\phi_{j\mid y=k}}$
+\end_inset
+
+ for 
+\begin_inset Formula $j>0$
+\end_inset
+
+, and 
+\begin_inset Formula $\sum_{j=1}^{m}\log(1-\phi_{j\mid j=k})+\log(\phi_{k}^{k}(1-\phi_{k})^{1-k})$
+\end_inset
+
+ for 
+\begin_inset Formula $j=0$
+\end_inset
+
+.
+ Then 
+\begin_inset Formula $p(x\mid y=1)=\theta_{1}^{T}\left[\begin{array}{c}
+1\\
+x
+\end{array}\right]$
+\end_inset
+
+.
+ Define 
+\begin_inset Formula $\theta_{0}$
+\end_inset
+
+ in an analogous way.
+ Then 
+\begin_inset Formula $\theta=\theta_{1}-\theta_{0}$
+\end_inset
+
+ is the vector such that 
+\begin_inset Formula $\theta^{T}\left[\begin{array}{c}
+1\\
+x
+\end{array}\right]>0\iff p(x\mid y=1)>p(x\mid y=0)$
+\end_inset
+
+ .
+\end_layout
+
+\end_deeper
+\begin_layout Section
+Exponential family and geometric distribution
+\end_layout
+
+\begin_layout Enumerate
+Use the take-logs-then-exponentiate trick:
+\begin_inset Formula 
+\begin{align*}
+\exp\log p(y;\phi) & =\exp\log((1-\phi)^{y-1}\phi)\\
+ & =\exp((y-1)\log(1-\phi)+\log\phi)\\
+ & =\exp(\log(1-\phi)y+\log(\frac{\phi}{1-\phi}))
+\end{align*}
+
+\end_inset
+
+ So, 
+\begin_inset Formula 
+\begin{align*}
+b(y) & =1\\
+\eta & =\log(1-\phi)\\
+T(y) & =y\\
+a(\eta) & =\log(\frac{\phi}{1-\phi}).
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+We can write the mean of the geometric distribution as a function of 
+\begin_inset Formula $\eta$
+\end_inset
+
+ as
+\begin_inset Formula 
+\[
+\frac{1}{\phi}=\frac{1}{1-\exp\eta}.
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+The log-likelihood is 
+\begin_inset Formula 
+\begin{align*}
+\log\ell(\theta) & =\log\prod_{i=1}^{m}p(y^{(i)}\mid x^{(i)};\theta)\\
+ & =\sum_{i=1}^{m}\theta^{T}x^{(i)}y+\log(\frac{\phi}{1-\phi}))\\
+ & =\sum_{i=1}^{m}\theta^{T}x^{(i)}y+\log(\frac{1-\exp(\theta^{T}x^{(i)})}{-\exp(\theta^{T}x^{(i)})})\\
+ & =\sum_{i=1}^{m}\theta^{T}x^{(i)}(y+1)+\log(1-\exp(\theta^{T}x^{(i)}))\\
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+The 
+\begin_inset Formula $j$
+\end_inset
+
+th partial derivative is then =
+\begin_inset Formula 
+\begin{align*}
+\frac{\partial\log\ell(\theta)}{\partial\theta_{j}} & =\sum_{i=1}^{m}x_{j}^{(i)}(y^{(i)}+1)+\frac{x_{j}^{(i)}\exp(\theta^{T}x^{(i)})}{1-\exp(\theta^{T}x^{(i)}}\\
+ & =\sum_{i=1}^{m}x_{j}^{(i)}\left(y^{(i)}+\frac{1}{1-\exp(\theta^{T}x^{(i)})}\right)
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The update rule for stochastic gradient descent is th
+\begin_inset Formula 
+\begin{align*}
+\theta_{j}: & =\theta_{j}+\alpha x_{j}^{(i)}\left(y^{(i)}+\frac{1}{1-\exp(\theta^{T}x^{(i)}}\right)\\
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\end_body
+\end_document
