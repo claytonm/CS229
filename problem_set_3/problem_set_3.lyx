@@ -1,0 +1,519 @@
+#LyX 2.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 508
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass article
+\begin_preamble
+\renewcommand{\labelenumi}{\alph{enumi})}
+\end_preamble
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Section
+Uniform convergence and Model Selection
+\end_layout
+
+\begin_layout Enumerate
+The hypotheses 
+\begin_inset Formula $\hat{h}_{i}$
+\end_inset
+
+ form a new hypothesis class of size 
+\begin_inset Formula $k$
+\end_inset
+
+, with generalization error estimated on a dataset of size 
+\begin_inset Formula $\beta m$
+\end_inset
+
+.
+ We can therefore plug 
+\begin_inset Formula $\frac{\delta}{2}$
+\end_inset
+
+ in for 
+\begin_inset Formula $\delta$
+\end_inset
+
+ the formula in Part 6, page 7, and 
+\begin_inset Formula $\beta m$
+\end_inset
+
+ in for 
+\begin_inset Formula $m$
+\end_inset
+
+, to get
+\begin_inset Formula 
+\[
+\left|\hat{\varepsilon}\left(h_{i}\right)-\hat{\varepsilon}_{cv}\left(h_{i}\right)\right|\leq\sqrt{\frac{1}{2\beta m}\log\left(\frac{4k}{\delta}\right)}.
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+This result is analogous to the Theorem from Part 6, page 7, with 
+\begin_inset Formula $m=\beta m$
+\end_inset
+
+, 
+\begin_inset Formula $\frac{\delta}{2}$
+\end_inset
+
+ in place of 
+\begin_inset Formula $\delta$
+\end_inset
+
+, and with the coefficient 2 pulled underneath the square root.
+ 
+\end_layout
+
+\begin_layout Enumerate
+This result follows immediately by solving for 
+\begin_inset Formula $\varepsilon\left(\hat{h}_{j}\right)$
+\end_inset
+
+ and plugging the solution in for 
+\begin_inset Formula $\underset{i=1,...k}{\min}\varepsilon\left(\hat{h}_{i}\right)$
+\end_inset
+
+ in the equation from part b.
+\end_layout
+
+\begin_layout Section
+VC Dimension
+\end_layout
+
+\begin_layout Enumerate
+This hypothesis class can shatter a single point 
+\begin_inset Formula $x$
+\end_inset
+
+ by letting 
+\begin_inset Formula $a<x$
+\end_inset
+
+ if 
+\begin_inset Formula $x=0$
+\end_inset
+
+ and 
+\begin_inset Formula $a>x$
+\end_inset
+
+ otherwise.
+ It cannot shatter two points with different signs, so its VC dimension
+ is 1.
+\end_layout
+
+\begin_layout Enumerate
+This hypothesis class can shatter two points 
+\begin_inset Formula $x,$
+\end_inset
+
+y.
+ Assume 
+\begin_inset Formula $x<y$
+\end_inset
+
+.
+ If 
+\begin_inset Formula $f(x)=f(y)=1,$
+\end_inset
+
+ then let 
+\begin_inset Formula $a<x<y<b$
+\end_inset
+
+.
+ If 
+\begin_inset Formula $f(x)=f(y)=0$
+\end_inset
+
+, then let 
+\begin_inset Formula $x<a<b<y$
+\end_inset
+
+.
+ If 
+\begin_inset Formula $f(x)=0$
+\end_inset
+
+ and 
+\begin_inset Formula $f(y)=1$
+\end_inset
+
+, then let 
+\begin_inset Formula $x<a<y<b$
+\end_inset
+
+, and if 
+\begin_inset Formula $f(x)=1$
+\end_inset
+
+ and 
+\begin_inset Formula $f(y)=0$
+\end_inset
+
+, then let 
+\begin_inset Formula $a<x<b<y$
+\end_inset
+
+.
+ It cannot shatter three points 
+\begin_inset Formula $x,y,z,$
+\end_inset
+
+where 
+\begin_inset Formula $x<y<z$
+\end_inset
+
+, and 
+\begin_inset Formula $f(x)=f(z)=1$
+\end_inset
+
+, and 
+\begin_inset Formula $f(y)=0$
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Enumerate
+This hypothesis class can shatter a single point by alternating the sign
+ of 
+\begin_inset Formula $a.$
+\end_inset
+
+ With two points, however, the hypothesis class can shatter pairs that are
+ the same sign or different signs, but there is not a hypothesis that can
+ shatter both.
+ The VC dimension is therefore 1.
+\end_layout
+
+\begin_layout Enumerate
+Given the periodicity of the 
+\begin_inset Formula $\sin$
+\end_inset
+
+ function, we only have to consider the hypothesis class between 0 and 
+\begin_inset Formula $2\pi$
+\end_inset
+
+.
+ Along this interval, the class is equivalent to the hypothesis class from
+ part b, so it's VC dimension is 2.
+\end_layout
+
+\begin_layout Section
+\begin_inset Formula $l_{1}$
+\end_inset
+
+ regularization for least squares
+\end_layout
+
+\begin_layout Enumerate
+Let 
+\begin_inset Formula $\theta_{\overline{k}}$
+\end_inset
+
+ indicate the vector 
+\begin_inset Formula $\theta$
+\end_inset
+
+ with the 
+\begin_inset Formula $k$
+\end_inset
+
+th element set to zero, and 
+\begin_inset Formula $X_{k}$
+\end_inset
+
+ indicate the 
+\begin_inset Formula $k$
+\end_inset
+
+th column of the matrix 
+\begin_inset Formula $X$
+\end_inset
+
+.
+ Then we can write the objective function 
+\begin_inset Formula $J(\theta)$
+\end_inset
+
+ as 
+\begin_inset Formula 
+\[
+J(\theta)=\frac{1}{2}\sum_{i=1}^{m}\left(\theta_{\bar{k}}x^{(i)}+\theta_{k}x_{k}^{(i)}-y^{(i)}\right)^{2}-\lambda\sum_{i=1}^{n}\left|\theta_{i}\right|
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+Taking the derivative with respect to 
+\begin_inset Formula $\theta_{k}$
+\end_inset
+
+, we get
+\begin_inset Formula 
+\begin{align*}
+\frac{\partial J}{\theta_{k}} & =\sum_{i=1}^{m}\left(\theta_{\bar{k}}x^{(i)}+\theta_{k}x_{k}^{(i)}-y^{(i)}\right)x_{k}^{(i)}+s\lambda\\
+ & =X_{k}^{T}\left(X\theta_{\overline{k}}+X_{k}\theta_{k}-Y\right)+s\lambda
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Solving for 
+\begin_inset Formula $\theta_{k}$
+\end_inset
+
+, we get
+\begin_inset Formula 
+\[
+\theta_{k}=\left(X_{k}^{T}X_{k}\right)^{-1}\left[X_{k}^{T}Y-s\lambda-X_{k}^{T}X_{k}\theta_{k}\right]
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+To implement coordinate descent with 
+\begin_inset Formula $\ell_{1}$
+\end_inset
+
+ regularization, we would calculate 
+\begin_inset Formula $\theta_{k}$
+\end_inset
+
+ for s = 
+\begin_inset Formula $\pm1$
+\end_inset
+
+, plug each value of 
+\begin_inset Formula $\theta_{k}$
+\end_inset
+
+ back into 
+\begin_inset Formula $J\left(\theta\right)$
+\end_inset
+
+, and choose the value that maximizes the objective function.
+ 
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+An implementation of the above algorithm is in the q3.R file.
+ 
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula $\ell_{1}$
+\end_inset
+
+ regularization results in sparse parameter vectors 
+\begin_inset Formula $\theta$
+\end_inset
+
+.
+ The features to select are precisely those features that correspond to
+ the indices with non-zero values in 
+\begin_inset Formula $\theta.$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+K-Means Clustering
+\end_layout
+
+\begin_layout Standard
+An implementation of k-means is located in the file q4.R.
+ 
+\end_layout
+
+\begin_layout Description
+k=2 looks like
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Graphics
+	filename clusters_with_k2.png
+	scale 10
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Description
+k=3 looks like
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Description
+\begin_inset Graphics
+	filename clusters_with_k3.png
+	scale 10
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+The generalized EM algorithm
+\end_layout
+
+\begin_layout Enumerate
+The argument for convergence is nearly identical to the one given in lecture
+ for the EM algorithm.
+ Write the objective function as 
+\begin_inset Formula $J\left(Q,\theta\right)$
+\end_inset
+
+.
+ Then 
+\begin_inset Formula $\theta_{t+1}:=\theta_{t}+\alpha\nabla_{\theta}J$
+\end_inset
+
+, where the learning rate, 
+\begin_inset Formula $\alpha$
+\end_inset
+
+, is chosen small enough to ensure that 
+\begin_inset Formula $J(Q,\theta_{t+1})\geq J\left(Q,\theta_{t}\right)$
+\end_inset
+
+.
+ Then we have that
+\begin_inset Formula 
+\begin{align*}
+\ell\left(\theta_{t+1}\right) & \geq J\left(Q,\theta_{t+1}\right)\\
+ & \geq J\left(Q,\theta_{t}\right)\\
+ & =\ell\left(\theta_{t}\right),
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+so the likelihood function is monotonically increasing.
+ The only difference between this derivation and the derivation in the notes
+ is that the second inequality is now justified by the choice of 
+\begin_inset Formula $\alpha.$
+\end_inset
+
+ 
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Calculating the partial derivative 
+\begin_inset Formula $\nabla_{\theta}\sum_{i}\log\sum_{z^{(i)}}p\left(x^{(i)},z^{(i)};\theta\right)$
+\end_inset
+
+, we get
+\begin_inset Formula 
+\begin{align*}
+\sum_{i}\frac{^{1}}{\sum_{z^{(i)}}p\left(x^{(i)},z^{(i)};\theta\right)}\nabla_{\theta}\sum_{z^{(i)}}\frac{Q_{i}}{Q_{i}}p\left(x^{(i)},z^{(i)};\theta\right)\\
+= & \sum_{i}\sum_{z^{(i)}}\frac{Q_{i}}{Q_{i}}\frac{1}{p\left(x^{(i)},z^{(i)};\theta\right)}\nabla_{\theta}p\left(x^{(i)},z^{(i)};\theta\right)\\
+ & =\sum_{i}\sum_{z^{(i)}}\frac{Q_{i}}{Q_{i}}\nabla_{\theta}\log p\left(x^{(i)},z^{(i)};\theta\right)\\
+ & =\nabla_{\theta}\sum_{i}\sum_{z^{(i)}}Q_{i}\log\frac{^{p\left(x^{(i)},z^{(i)};\theta\right)}}{Q_{i}}.\\
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document

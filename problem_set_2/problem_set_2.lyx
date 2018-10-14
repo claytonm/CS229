@@ -395,9 +395,127 @@ with respect to
 \begin_inset Formula $\sum_{i=1}^{m}\alpha_{i}y^{(i)}=0$
 \end_inset
 
-.
+.s
 \end_layout
 
 \end_deeper
+\begin_layout Section
+SVM with Gaussian kernel
+\end_layout
+
+\begin_layout Enumerate
+Taking the provided hint and running with it, we've got
+\begin_inset Formula 
+\begin{align*}
+\left|f(x^{(j)})-y^{(j)}\right| & =\left|\sum_{i=1}^{m}y^{(i)}K(x^{(i)},x^{(j)})-y^{(j)}\right|\\
+ & =\left|\sum_{i\neq j}^{m}y^{(i)}K(x^{(i)},x^{(j)})\right|+\left|y^{(j)}-y^{(j)}\right|\\
+ & =\left|\sum_{i\neq j}^{m}y^{(i)}K(x^{(i)},x^{(j)})\right|\\
+ & \leq\left|\sum_{i\neq j}^{m}y^{(i)}e^{-\frac{z^{2}}{\tau^{2}}}\right|\\
+ & \leq\sum_{i\neq j}^{m}\left|y^{(i)}e^{-\frac{z^{2}}{\tau^{2}}}\right|\\
+ & =\sum_{i\neq j}^{m}e^{-\frac{z^{2}}{\tau^{2}}}=(m-1)e^{-\frac{z^{2}}{\tau^{2}}}<1
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+Rearranging the last inequality, we get 
+\begin_inset Formula $\tau>\frac{z}{\sqrt{ln(m-1)}}.$
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Yes, by design, the resulting classifier will achieve zero training error,
+ though not necessarily zero test error.
+\end_layout
+
+\begin_layout Enumerate
+No, the parameter 
+\begin_inset Formula $C$
+\end_inset
+
+ regulates the trade-off between bias and variance, or training and test
+ error.
+ When 
+\begin_inset Formula $C$
+\end_inset
+
+ is small, the objective function may obtain a minimum when 
+\begin_inset Formula $w$
+\end_inset
+
+ is small but 
+\begin_inset Formula $\xi_{i}$
+\end_inset
+
+ terms are potentially large.
+ If the latter are large, the model could have non-zero training error.
+\end_layout
+
+\begin_layout Section
+Naive Bayes and SVMs for Spam Classification
+\end_layout
+
+\begin_layout Standard
+SVMs outperform Naive Bayes on small sample szies, but Naive Bayes has a
+ lower generalization error for sample sizes greater than 1000.
+ See attached graphs.
+ 
+\end_layout
+
+\begin_layout Section
+Uniform Convergence
+\end_layout
+
+\begin_layout Enumerate
+With generalization error γ, the probability of not making an error is 1-
+\begin_inset Formula $\gamma$
+\end_inset
+
+, and the probability of making no errors on 
+\begin_inset Formula $m$
+\end_inset
+
+ examples is 
+\begin_inset Formula $(1-\gamma)^{m}$
+\end_inset
+
+.
+ Using the hint, that 
+\begin_inset Formula $\left(1-\gamma\right)^{m}\leq e^{-\gamma m}$
+\end_inset
+
+, we set
+\begin_inset Formula 
+\begin{align*}
+1-k\exp\left(-\gamma m\right) & =1-\delta\\
+\exp\left(-\gamma m\right) & =\frac{\delta}{k}\\
+\gamma & =\frac{1}{m}\ln\left(\frac{\delta}{k}\right)\\
+\gamma & =\frac{1}{m}\ln\left(\frac{k}{\delta}\right).
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Rearranging for 
+\begin_inset Formula $m$
+\end_inset
+
+, we get 
+\begin_inset Formula $m=\frac{1}{\gamma}\ln\left(\frac{k}{\delta}\right)$
+\end_inset
+
+.
+\end_layout
+
 \end_body
 \end_document
