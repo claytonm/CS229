@@ -1,0 +1,866 @@
+#LyX 2.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 508
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass article
+\begin_preamble
+\renewcommand{\labelenumi}{\alph{enumi})}
+\end_preamble
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Section
+EM for supervised learning
+\end_layout
+
+\begin_layout Enumerate
+The 
+\begin_inset Formula $\log$
+\end_inset
+
+ likelihood function is given by
+\begin_inset Formula 
+\begin{align*}
+\ell(\phi,\theta_{0},\theta_{1}) & =\log\prod\exp\left(\frac{-\left(y^{(i)}-\theta_{z}^{T}x^{(i)}\right)^{2}}{2\sigma^{2}}\right)g\left(\phi^{T}x^{(i)}\right)^{z}\left(1-g\left(\phi^{T}x^{(i)}\right)\right)^{1-z}\\
+ & =\sum\frac{-\left(y^{(i)}-\theta_{z}^{T}x^{(i)}\right)^{2}}{2\sigma^{2}}+z\log g\left(\phi^{T}x^{(i)}\right)+(1-z)\log\left(1-g\left(\phi^{T}x^{(i)}\right)\right).\\
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+With 
+\begin_inset Formula $z=0,$
+\end_inset
+
+ this becomes
+\begin_inset Formula 
+\[
+\ell_{0}\left(\theta_{0},\phi\right)=\sum\frac{-\left(y^{(i)}-\theta_{0}^{T}x^{(i)}\right)^{2}}{2\sigma^{2}}+\log\left(1-g\left(\phi^{T}x^{(i)}\right)\right).
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Differentiating with respect to 
+\begin_inset Formula $\theta_{0}$
+\end_inset
+
+, we get
+\begin_inset Formula 
+\[
+\frac{\partial\ell_{0}}{\theta_{0,k}}=\sum-\left(y^{(i)}-\theta_{0}^{T}x^{(i)}\right)x_{k}^{(i)}
+\]
+
+\end_inset
+
+Setting equal to zero and writing in matrix notation, this becomes
+\begin_inset Formula 
+\[
+X_{0}^{T}\left(Y_{0}-X\theta_{0}\right)=0,
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+where 
+\begin_inset Formula $X_{0},Y_{0}$
+\end_inset
+
+ are the rows in 
+\begin_inset Formula $X,Y$
+\end_inset
+
+ that correspond to 
+\begin_inset Formula $z=0$
+\end_inset
+
+.
+ Solving for 
+\begin_inset Formula $\theta_{0}$
+\end_inset
+
+ yields the familiar normal equations,
+\begin_inset Formula 
+\[
+\theta_{0}=\left(X_{0}^{T}X_{0}\right)^{-1}X_{0}^{T}Y_{0}.
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The derivation for 
+\begin_inset Formula $\theta_{1}$
+\end_inset
+
+ is identical.
+ 
+\end_layout
+
+\begin_layout Standard
+Turning to 
+\begin_inset Formula $\phi$
+\end_inset
+
+, we remove terms from the likelihood that do not contain 
+\begin_inset Formula $\phi$
+\end_inset
+
+, to get 
+\begin_inset Formula 
+\begin{align*}
+f\left(\phi\right) & =\sum z\log g\left(\phi^{T}x^{(i)}\right)+(1-z)\log\left(1-g\left(\phi^{T}x^{(i)}\right)\right).
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Taking the 
+\begin_inset Formula $k$
+\end_inset
+
+th partial derivative with respect to 
+\begin_inset Formula $\phi$
+\end_inset
+
+,
+\begin_inset Formula 
+\begin{align*}
+\frac{\partial f}{\partial\phi_{k}} & =\sum\left(\frac{z^{(i)}}{g\left(\phi^{T}x^{(i)}\right)}-\frac{\left(1-z^{(i)}\right)}{1-g\left(\phi^{T}x^{(i)}\right)}\right)g\left(\phi^{T}x^{(i)}\right)\left(1-g\left(\phi^{T}x^{(i)}\right)\right)x_{k}^{(i)}\\
+ & =\sum\left(z^{(i)}-g\left(\phi^{T}x^{(i)}\right)\right)x_{k}^{(i)}.\\
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In matrix form, 
+\begin_inset Formula $\nabla f_{\phi}=X^{T}H$
+\end_inset
+
+, where 
+\begin_inset Formula $H=Z-G$
+\end_inset
+
+, 
+\begin_inset Formula $Z_{i}=z^{(i)}$
+\end_inset
+
+, and 
+\begin_inset Formula $H_{i}=g\left(\phi^{T}x^{(i)}\right)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+To derive the Hessian of 
+\begin_inset Formula $f$
+\end_inset
+
+, we take the 
+\begin_inset Formula $j$
+\end_inset
+
+th partial derivative of 
+\begin_inset Formula $\nabla f_{\phi}$
+\end_inset
+
+, to get
+\begin_inset Formula 
+\[
+\frac{\partial\nabla f_{\phi}}{\partial\phi_{j}}=-\sum g\left(\phi^{T}x^{(i)}\right)\left(1-g\left(\phi^{T}x^{(i)}\right)\right)x_{k}^{(i)}x_{j}^{(i)}.
+\]
+
+\end_inset
+
+ In matrix notation, this is 
+\begin_inset Formula $X^{T}DX$
+\end_inset
+
+, where 
+\begin_inset Formula $D$
+\end_inset
+
+ is a diagonal matrix with 
+\begin_inset Formula $D_{ii}=g\left(\phi^{T}x^{(i)}\right)\left(g\left(\phi^{T}x^{(i)}\right)-1\right)$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+In the E-step, we calculate 
+\begin_inset Formula $p\left(z^{(i)}\mid y^{(i)},x^{(i)},\varphi\right)$
+\end_inset
+
+, where 
+\begin_inset Formula $\varphi$
+\end_inset
+
+is a catch-all for the parameters in the model.
+ Using Bayes' Theorem, this becomes
+\begin_inset Formula 
+\begin{align*}
+p\left(z^{(i)}=j\mid y^{(i)},x^{(i)},\varphi\right) & =\frac{p\left(y^{(i)}\mid x^{(i)},z(i)=j,\varphi\right)p\left(z^{(i)}=j\mid x^{(i)},\varphi\right)}{\sum_{j}p\left(y^{(i)}\mid x^{(i)},z(i)=j,\varphi\right)p\left(z^{(i)}=j\mid x^{(i)},\varphi\right)}=w_{j}^{(i)}.
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+For the M-step, we first write the likelihood as
+\begin_inset Formula 
+\begin{align*}
+\ell\left(\theta_{0},\theta_{1},\phi\right) & =\prod\sum w_{j}^{(i)}p\left(y^{(i)}\mid x^{(i)},z^{(i)}=j,\theta_{0},\theta_{1},\phi\right).
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Taking logs and substituting, this becomes
+\begin_inset Formula 
+\begin{align*}
+\log\ell(\theta_{0},\theta_{1},\phi) & =\sum_{i=1}^{m}\sum_{j=0}^{1}w_{j}^{(i)}\log\exp\left(-\left(y^{(i)}-\theta_{j}^{T}x^{(i)}\right)^{2}\right)\\
+ & =-\sum_{i=1}^{m}\left[w_{0}^{(i)}\left(y^{(i)}-\theta_{0}^{T}x^{(i)}\right)^{2}+w_{1}^{(i)}\left(y^{(i)}-\theta_{1}^{T}x^{(i)}\right)^{2}\right].
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Taking the 
+\begin_inset Formula $k$
+\end_inset
+
+th partial derivitative of 
+\begin_inset Formula $\theta_{0}$
+\end_inset
+
+, we get
+\begin_inset Formula 
+\[
+\frac{\partial\log\ell\left(\theta_{0},\theta_{1},\phi\right)}{\partial\theta_{0,k}}=-\sum_{i=1}^{m}w_{0}^{(i)}\left(y^{(i)}-\theta_{0}^{T}x^{(i)}\right)x_{k}^{(i)}.
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In matrix notation this becomes 
+\begin_inset Formula $X^{T}W_{0}\left(Y-X\theta_{0}\right)$
+\end_inset
+
+, where 
+\begin_inset Formula $W_{0}$
+\end_inset
+
+ is a diagonal matrix with 
+\begin_inset Formula $W_{i,i}=w_{0}^{(i)}$
+\end_inset
+
+.
+ Solving for 
+\begin_inset Formula $\theta_{0,}$
+\end_inset
+
+ we get the familiar normal equations for weighted regression,
+\begin_inset Formula 
+\[
+\theta_{0}=\left(X_{0}^{T}W_{0}X_{0}\right)^{-1}X_{0}^{T}W_{0}Y_{0}.
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The derivation for 
+\begin_inset Formula $\theta_{1}$
+\end_inset
+
+ is identical.
+ 
+\end_layout
+
+\begin_layout Standard
+Turning to 
+\begin_inset Formula $\phi$
+\end_inset
+
+, the 
+\begin_inset Formula $\log$
+\end_inset
+
+ likelihood is the same form as the logistic regression above, but with
+ 
+\begin_inset Formula $z$
+\end_inset
+
+ replaced by 
+\begin_inset Formula $w$
+\end_inset
+
+.
+ Therefore, the gradient and Hessian are of the same form as above.
+ In particular, the gradient is 
+\begin_inset Formula $X^{T}H$
+\end_inset
+
+, where 
+\begin_inset Formula $H$
+\end_inset
+
+ is a diagonal matrix with 
+\begin_inset Formula $H_{i,i}=w^{(i)}-g\left(\phi^{T}x^{(i)}\right)$
+\end_inset
+
+, and the Hessian is 
+\begin_inset Formula $X^{T}DX$
+\end_inset
+
+, where 
+\begin_inset Formula $D$
+\end_inset
+
+ is a diagonal matrix with 
+\begin_inset Formula $D_{ii}=g\left(\phi^{T}x^{(i)}\right)\left(g\left(\phi^{T}x^{(i)}\right)-1\right)$
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\begin_layout Section
+Factor analysis and PCA
+\end_layout
+
+\begin_layout Enumerate
+First calculate the means of 
+\begin_inset Formula $z$
+\end_inset
+
+ and 
+\begin_inset Formula $x$
+\end_inset
+
+.
+ By definition, 
+\begin_inset Formula $\mathbb{\mathbb{E}}\left[z\right]=0$
+\end_inset
+
+.
+ We can write 
+\begin_inset Formula $x$
+\end_inset
+
+ as 
+\begin_inset Formula 
+\[
+x=Uz+\epsilon,
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+where 
+\begin_inset Formula $\epsilon\sim N\left(0,\sigma^{2}I\right)$
+\end_inset
+
+.
+ Calculating the expectation of the right side gives 
+\begin_inset Formula 
+\[
+\mathbb{E}\left[Uz+\epsilon\right]=U\mathbb{E}\left[z\right]+\mathbb{E\left[\epsilon\right]=}U\cdot0+0=0.
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+By definition, 
+\begin_inset Formula $Var\left[z\right]=1$
+\end_inset
+
+, so 
+\begin_inset Formula $\varSigma_{zz}=1$
+\end_inset
+
+.
+ To get 
+\begin_inset Formula $\varSigma_{zx}$
+\end_inset
+
+, we calculate
+\begin_inset Formula 
+\begin{align*}
+\mathbb{E}\left[\left(z-\mathbb{E}\left[z\right]\right)\left(x-\mathbb{E}\left[x\right]\right)^{T}\right] & =\mathbb{E}\left[z\left(Uz+\epsilon\right)^{T}\right]\\
+ & =\mathbb{E}\left[z\left(z^{T}U^{T}+\epsilon^{T}\right)\right]\\
+ & =\mathbb{E}\left[z\left(z^{T}U^{T}+\epsilon^{T}\right)\right]\\
+ & =\mathbb{E}\left[zz^{T}\right]U^{T}+\mathbb{E}\left[z^{T}\epsilon\right]\\
+ & =U^{T}.
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+It follows that 
+\begin_inset Formula $\varSigma_{xz}=U$
+\end_inset
+
+.
+ Finally, to get 
+\begin_inset Formula $\varSigma_{xx}$
+\end_inset
+
+, we calculate
+\begin_inset Formula 
+\begin{align*}
+\mathbb{E}\left[\left(x-\mathbb{E}\left[x\right]\right)\left(x-\mathbb{E}\left[x\right]\right)^{T}\right] & =\mathbb{E}\left[\left(Uz+\epsilon\right)\left(Uz+\epsilon\right)^{T}\right]\\
+ & =\mathbb{E}\left[Uzz^{T}U^{T}+Uz\epsilon^{T}+\epsilon\epsilon^{T}\right]\\
+ & =UU^{T}+\sigma^{2}I.
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The joint distribution of 
+\begin_inset Formula $z$
+\end_inset
+
+ and 
+\begin_inset Formula $x$
+\end_inset
+
+ is therefore given by
+\begin_inset Formula 
+\[
+\left[\begin{array}{c}
+z\\
+x
+\end{array}\right]\sim N\left(\left[\begin{array}{c}
+0\\
+0
+\end{array}\right],\left[\begin{array}{cc}
+1 & U^{T}\\
+U & UU^{T}+\sigma^{2}I
+\end{array}\right]\right).
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+To find 
+\begin_inset Formula $\mu_{z\mid x}$
+\end_inset
+
+ and 
+\begin_inset Formula $\varSigma_{z\mid x}$
+\end_inset
+
+, we plug the values above into the general formulas for the conditional
+ mean and variance of multivariate normal variables.
+ For 
+\begin_inset Formula $\mu_{x\mid z}$
+\end_inset
+
+, we have
+\begin_inset Formula 
+\begin{align*}
+\mu_{z\mid x} & =\mu_{z}+\varSigma_{zx}\varSigma_{xx}^{-1}\left(x-\mu_{x}\right)\\
+ & =U^{T}\left[UU^{T}+\sigma^{2}I\right]^{-1}x\\
+ & =\left[U^{T}U+\sigma^{2}I\right]^{-1}U^{T}x.
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+For 
+\begin_inset Formula $\varSigma_{z\mid x}$
+\end_inset
+
+, we have
+\begin_inset Formula 
+\begin{align*}
+\varSigma_{z\mid x} & =\varSigma_{zz}-\varSigma_{zx}\varSigma_{xx}^{-1}\varSigma_{xz}\\
+ & =1-U^{T}\left[UU^{T}+\sigma^{2}I\right]^{-1}U\\
+ & =1-\left[U^{T}U+\sigma^{2}I\right]^{-1}U^{T}U.
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+For the E-step, 
+\begin_inset Formula $Q_{i}\left(z^{(i)}\right)$
+\end_inset
+
+ is equal to a multivariate normal distribution with parameters 
+\begin_inset Formula $\mu_{z\mid x}$
+\end_inset
+
+ and 
+\begin_inset Formula $\varSigma_{z\mid x}.$
+\end_inset
+
+ For the M-step, we observe that this problem is equivalent to the general
+ factor anaysis problem, with 
+\begin_inset Formula $\mu=0$
+\end_inset
+
+ and 
+\begin_inset Formula $\varLambda=\sigma^{2}I$
+\end_inset
+
+.
+ We can therefore plug the values above into the M updated step for factor
+ analysis to get
+\begin_inset Formula 
+\[
+U=\left(\sum\left(x^{(i)}\right)\mu_{z^{(i)}\mid x^{(i)}}^{T}\right)\left(\sum\mu_{z^{(i)}\mid x^{(i)}}\mu_{z^{(i)}\mid x^{(i)}}^{T}+\varSigma_{z^{(i)}\mid x^{(i)}}\right)^{-1}.
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+As 
+\begin_inset Formula $\sigma^{2}\rightarrow0$
+\end_inset
+
+, 
+\begin_inset Formula $\mu_{z\mid x}\rightarrow\left[U^{T}U\right]^{-1}U^{T}x=U^{-1}x$
+\end_inset
+
+, and 
+\begin_inset Formula $\varSigma_{z\mid x}\rightarrow1-\left[U^{T}U\right]^{-1}U^{T}U=1$
+\end_inset
+
+.
+ Now we can re-write the M step update in matrix form and substitute these
+ values for 
+\begin_inset Formula $\mu_{z\mid x}$
+\end_inset
+
+ and 
+\begin_inset Formula $\varSigma_{z\mid x}$
+\end_inset
+
+ as
+\begin_inset Formula 
+\begin{align*}
+U & =XX^{T}U^{-T}\left(U^{-1}XX^{T}U^{-T}\right)^{-1}\\
+ & =U^{T}U^{-T}\left(U^{-1}U^{T}U^{-T}\right)^{-1}\\
+ & =U.
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+The first line is the translation of the update step into matrix notation.
+ The second line follows from the fact that 
+\begin_inset Formula $X^{T}X=\varSigma_{X}$
+\end_inset
+
+ (because 
+\begin_inset Formula $\mu_{x}=0$
+\end_inset
+
+), and 
+\begin_inset Formula $\varSigma_{xx}=U$
+\end_inset
+
+, as derived above.
+ So the M step update leaves 
+\begin_inset Formula $U$
+\end_inset
+
+ unchanged, as required.
+\end_layout
+
+\end_deeper
+\begin_layout Section
+PCA and ICA for Natural Images
+\end_layout
+
+\begin_layout Standard
+I skipped this problem because it was too tedious to convert the Matlab/Octave
+ code into Python or R.
+ 
+\end_layout
+
+\begin_layout Section
+Convergence of Policy Iterations
+\end_layout
+
+\begin_layout Enumerate
+From the definition of 
+\begin_inset Formula $B$
+\end_inset
+
+, we can write 
+\begin_inset Formula 
+\begin{alignat*}{1}
+B\left(V_{1}\right)-B\left(V_{2}\right) & =\gamma\sum_{s^{\prime}\in S}P_{s,\pi\left(s\right)}\left(s^{\prime}\right)\left[V_{2}\left(s^{\prime}\right)-V_{1}\left(s^{\prime}\right)\right]\\
+ & \geq\gamma\delta\\
+ & \geq0,
+\end{alignat*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+where 
+\begin_inset Formula $\delta=min_{s\in S}\left\{ V_{2}\left(s\right)-V_{1}\left(s\right)\right\} \geq0$
+\end_inset
+
+, by assumption.
+ 
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Let 
+\begin_inset Formula $s^{*}=\arg\max_{s\in S}\left\{ V\left(s\right)-V^{\pi}\left(s\right)\right\} $
+\end_inset
+
+.
+ Let 
+\begin_inset Formula 
+\[
+f\left(s\right)=\gamma\sum_{s^{\prime}\in S}P_{s,\pi\left(s\right)}\left(s^{\prime}\right)\left[V\left(s^{\prime}\right)-V^{\pi}\left(s^{\prime}\right)\right]
+\]
+
+\end_inset
+
+ for 
+\begin_inset Formula $s\in S$
+\end_inset
+
+.
+ Then from the hint, it follows that 
+\begin_inset Formula $f\left(s\right)\leq V\left(s^{*}\right)-V^{\pi}\left(s^{*}\right)$
+\end_inset
+
+.
+ Intuitively, what the hint says is that the average of a set of numbers
+ is less than (or equal) to the largest number in the set.
+ The result follows.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Per the hint, we'll first show that 
+\begin_inset Formula $V^{\pi}(s)\leq B^{\pi^{\prime}}(V^{\pi})(s)$
+\end_inset
+
+.
+ Subtracting, we get
+\begin_inset Formula 
+\begin{align*}
+B^{\pi^{\prime}}(V^{\pi})(s)-V^{\pi}(s) & =\gamma\sum_{s^{\prime}\in S}P_{s,\pi^{\prime}\left(s\right)}(s^{\prime})V^{\pi}(s^{\prime})-P_{s,\pi\left(s\right)}(s^{\prime})V^{\pi}(s^{\prime})\\
+ & \geq0,
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+where the inequality follows from the definition of 
+\begin_inset Formula $\pi^{\prime}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Let 
+\begin_inset Formula $B_{n}^{\pi^{\prime}}$
+\end_inset
+
+ indicate the application of 
+\begin_inset Formula $B^{\pi^{\prime}}$
+\end_inset
+
+ 
+\begin_inset Formula $n$
+\end_inset
+
+ times.
+ From part a) above, it follows that 
+\begin_inset Formula 
+\[
+V^{\pi}(s)\leq B^{\pi^{\prime}}V^{\pi}(s)\leq B_{2}(V^{\pi^{\prime}})(s)\leq B_{n}(V^{\pi^{\prime}})(s).
+\]
+
+\end_inset
+
+In addition, as 
+\begin_inset Formula $n\rightarrow\infty,B(V^{\pi^{\prime}})(s)\rightarrow V^{\pi^{\prime}}(s)$
+\end_inset
+
+.
+ The result follows.
+ 
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Assuming a finite number of states, 
+\begin_inset Formula $\left|S\right|$
+\end_inset
+
+, and actions, 
+\begin_inset Formula $\left|A\right|$
+\end_inset
+
+, there are a finite number of policies.
+ We showed in part c) that the policies are monotonically improving, so
+ we will stop improving our policy after at most 
+\begin_inset Formula $\left|S\right|^{\left|A\right|}$
+\end_inset
+
+ iterations.
+ Optimality follows from the same logic as we used in part c).
+ 
+\end_layout
+
+\begin_layout Section
+Reinforcement Learning: The Mountain Car
+\end_layout
+
+\begin_layout Standard
+Didn't do this one.
+ Again, too tedious to translate Matlab into Python or R.
+ 
+\end_layout
+
+\end_body
+\end_document
